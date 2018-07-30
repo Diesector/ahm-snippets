@@ -1,0 +1,14 @@
+'.text.html':
+
+  'AJAX Run JS':
+    'prefix':'ajax-run-js'
+    'body':"""
+      $.ajax({
+      	url: "${1:filename}.js",
+      	jsonpCallback: "jsonpcallback",
+      	jsonp: false,
+      	dataType: "jsonp"
+      }).done(function(data){
+      	console.log(data); // array of objects
+      });
+    """

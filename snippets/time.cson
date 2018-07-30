@@ -1,0 +1,8 @@
+'.text.html':
+
+  'Unix Time Format':
+    'prefix':'time-unix'
+    'body':"""
+      $timestamp = "1428020593"
+      $ts = gmdate("m-d-y H:i:s", $timestamp);
+      """

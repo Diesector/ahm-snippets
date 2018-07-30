@@ -1,0 +1,11 @@
+'.text.html, .source.sass, .source.css':
+
+  'Font Embed in CSS':
+    'prefix':'font-embed'
+    'body':"""
+      @font-face {
+        font-family: "${1:name}";
+        src:  url('${2:fonts}/$1/$1.ttf') format('truetype'),
+              url('${2:fonts}/$1/$1.woff') format('woff');
+      }
+    """

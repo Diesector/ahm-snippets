@@ -1,0 +1,9 @@
+'.text.html':
+
+  'PHP Split':
+    'prefix':'php-split-string-array'
+    'body':"""
+      $str = "";
+      $res = array_filter(explode(",", ${1:$str}));
+      print_r($res);
+    """

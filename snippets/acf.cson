@@ -1,0 +1,178 @@
+'.text.html':
+
+  'ACF Get Field HTML':
+    'prefix':'acf'
+    'body':"""
+      <?php
+      $field = get_field('hero_image', $post->ID);
+      if( $field != ''  ) { ?>
+
+      <?php } ?>
+    """
+
+  'ACF Repeater':
+    'prefix':'acf-repeater'
+    'body':"""
+      <?php if( have_rows('repeater_field_name') ): ?>
+      	<?php $counter=0; while( have_rows('repeater_field_name') ): the_row();
+
+      		$image = get_sub_field('image');
+
+      		//PARAMETERS OF FIELD
+      		$url = $image['url'];
+      		$alt = $image['alt'];
+      		//$title = $image['title'];
+      		//$caption = $image['caption'];
+      		//$size = 'thumbnail';
+      		//$thumb = $image['sizes'][ $size ];
+      		//$width = $image['sizes'][ $size . '-width' ];
+      		//$height = $image['sizes'][ $size . '-height' ];
+
+      		?>
+
+      		<?php if( $image ): ?>
+      			<img id="counter<?php echo $counter; ?>" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
+      		<?php endif; ?>
+
+      	<?php $counter++; endwhile; ?>
+      <?php endif; ?>
+    """
+
+  'ACF Repeater Nested':
+    'prefix':'acf-repeater-nested'
+    'body':"""
+
+      <?php while ( have_posts() ) : the_post(); ?>
+
+      	// check for rows (parent repeater)
+      	<?php if( have_rows('to-do_lists') ): ?>
+
+      			<?php
+      			// loop through rows (parent repeater)
+      			while( have_rows('to-do_lists') ): the_row(); ?>
+
+      				<?php the_sub_field('title'); ?>
+
+      				<?php
+      				// check for rows (sub repeater)
+      				if( have_rows('items') ): ?>
+
+      					<?php // loop through rows (sub repeater)
+      						while( have_rows('items') ): the_row(); // display each item as a list - with a class of completed ( if completed )
+      					?>
+      					<?php if( get_sub_field('completed') ){ echo 'class="completed"'; } ?><?php the_sub_field('name'); ?>
+
+      					<?php endwhile; ?>
+
+      				<?php endif; //if( get_sub_field('items') ): ?>
+
+      			<?php endwhile; // while( has_sub_field('to-do_lists') ): ?>
+
+      	<?php endif; // if( get_field('to-do_lists') ): ?>
+
+      <?php endwhile; // end of the loop. ?>
+
+    """
+
+  'ACF Image Object':
+    'prefix':'acf-image'
+    'body':"""
+      $HeroImage = get_field('hero_image', $post->ID);
+
+      $url = $HeroImage['url'];
+      $title = $HeroImage['title'];
+      $alt = $HeroImage['alt'];
+      $caption = $HeroImage['caption'];
+
+      // thumbnail
+      $size = 'thumbnail';
+      $thumb = $HeroImage['sizes'][ $size ];
+      $width = $HeroImage['sizes'][ $size . '-width' ];
+      $height = $HeroImage['sizes'][ $size . '-height' ];
+    """
+
+  'ACF Image Object Full':
+    'prefix':'acf-image-full'
+    'body':"""
+    	$featuredImage = get_field('featuredImage');
+  		$featuredImageAlignment = get_field('featuredImage-alignment');
+  		$banner = 'inPost-banner';
+  		$float = 'inPost-float';
+  		$floatRight = 'featuredImage-alignment';
+  		$none = 'noThumb';
+
+  		if( $featuredImage == $banner ) {
+
+  			$fallBackThumbnailNow = get_the_post_thumbnail( $post->ID, $banner, array('class' => 'attachment-'.$banner) );
+  			echo $fallBackThumbnailNow;
+
+  		};
+
+  		if( $featuredImage == $float ) {
+  			if( $floatRight == $featuredImageAlignment ) {
+  				$fallBackThumbnailNow = get_the_post_thumbnail( $post->ID, $float, array('class' => $float.' alignright') );
+  				echo $fallBackThumbnailNow;
+  			} else {
+  				$fallBackThumbnailNow = get_the_post_thumbnail( $post->ID, $float, array('class' => $float.' alignleft') );
+  				echo $fallBackThumbnailNow;
+  			};
+  		};
+
+  		if( $featuredImage == $none ) {
+
+
+  		};
+  		if( $featuredImage == false ){
+
+  			$fallBackThumbnailNow = get_the_post_thumbnail( $post->ID, $fallBackThumbnail, array('class' => 'attachment-'.$banner) );
+  			if(has_post_thumbnail($post->ID)) {
+  				echo $fallBackThumbnailNow;
+  			}
+
+
+  		};
+    """
+
+  'ACF Gallery (addon)':
+    'prefix':'acf-gallery'
+    'body':"""
+      <?php $images = get_field('gallery');
+
+      if( $images ): ?>
+
+
+      		<?php $i=0; foreach( $images as $image ): ?>
+
+      			   //echo '<li data-src="' . $image['url'] . '" data-thumb="' . $image['sizes']['thumbnail'] . '"><img data-src="' . $image['url'] . '" src="' . $image['sizes']['slider'] . '" alt="" /></li>';
+
+
+      			<?php $i++; ?>
+      		<?php endforeach; ?>
+
+      <?php endif; ?>
+    """
+  'ACF Isset':
+    'prefix':'acf-isset'
+    'body':"""
+      $virtual_enabled = isset(get_field('virtual_enabled', $post->ID )) ? get_field('virtual_enabled', $post->ID ) : '';
+      $virtual = isset(get_field('virtual', $post->ID )) ? get_field('virtual', $post->ID ) : '';
+      if( ($virtual_enabled == '1') && ($virtual != '')) {
+      	get_template_part('include','hybrid-overrides') ?>
+      };
+    """
+
+  'ACF File':
+    'prefix':'acf-file'
+    'body':"""
+      $downloadFile = wp_get_attachment_url( get_field('downloadFile', $post->ID) );
+    """
+
+  'ACF Category (addon)':
+    'prefix':'acf-taxonomy'
+    'body':"""
+      $queried_object = get_queried_object();
+      $taxonomy = $queried_object->taxonomy;
+      $term_id = $queried_object->term_id;
+      $cat_widget = get_field('widget_to_display', $taxonomy . '_' . $term_id);
+      echo $cat_widget;
+    """

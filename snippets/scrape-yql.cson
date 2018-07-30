@@ -1,0 +1,85 @@
+'.text.html':
+
+  'YQL Scrape Query':
+    'prefix':'yql-scrape-query'
+    'body':"""
+      select * from html where url="" and compat="html5" AND xpath=""
+    """
+
+  'YQL Scrape JS/HTML':
+    'prefix':'yql-scrape-functions'
+    'body':"""
+    	function getContent(data){
+    		if(data.results){
+    			var getContent = document.getElementById('scraper');
+    			getContent.innerHTML = data.results[0];
+    		}
+    	}
+    	$.ajax({
+    		url: "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fwww.ahmbrands.com%2Fem%2Fsiteoverrides%2Fmailchimp.html%22%20and%20xpath%3D%22%2F%2F*%5B%40id%3D'mc_embed_signup'%5D%22&diagnostics=true&format=xml&callback=getContent",
+    		jsonpCallback: "getContent",
+            success: getContent,
+    		jsonp: false,
+    		dataType: "jsonp"
+    	}).done(function(data){
+    		console.log(data); // array of objects
+    	});
+  """
+
+  'YQL Scrape Template':
+    'prefix':'yql-scrape-template'
+    'body':"""
+
+<html>
+	<head>
+		<script type="text/javascript" src="yui-min.js"></script>
+		<script>
+		function getContent(data){
+			if(data.results){
+				var getContent = document.getElementById('scraper');
+				getContent.innerHTML = data.results[0];
+			}
+		}
+		</script>
+	</head>
+	<body>
+	<div id="scraper">
+	<script src="http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fgma.yahoo.com%2Ftiny-recovering-chihuahua-nellie-steals-hearts-instagram-201105418--abc-news-topstories.html%22%20and%20xpath%3D%22%2F%2Fdiv%5Bcontains(%40class%2C'yom-art-lead-img')%5D%2Fimg%22%20&diagnostics=true&format=xml&callback=getContent"></script>
+	</div>
+
+
+	<!--
+	select * from html where url="http://gma.yahoo.com/tiny-recovering-chihuahua-nellie-steals-hearts-instagram-201105418--abc-news-topstories.html" and compat="html5" and xpath="//div[contains(@class,'yom-art-lead-img')]/img"
+	-->
+
+
+	</body>
+</html>
+
+<?php
+	$key="Featured Home 1"; if( get_post_meta($post->ID, $key, true) ) {
+		$url = get_post_meta($post->ID, $key, true);
+		$query_string = urlencode($url);
+		echo "<script src=\"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22" . htmlentities($query_string) . "%22%20and%20compat%3D%22html5%22%20and%20xpath%3D%22%2F%2Fdiv%5Bcontains(%40class%2C'product_detail')%5D%2Fspan%22&format=xml&callback=productTitle\"></script>";
+		echo "<script src=\"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22" . htmlentities($query_string) . "%22%20and%20compat%3D%22html5%22%20and%20xpath%3D%22%2F%2Fdiv%5Bcontains(%40class%2C'product_detail')%5D%2Ftable%2Ftbody%2Ftr%2Ftd%5B1%5D%2Fimg%22&diagnostics=true&format=xml&callback=productImage\"></script>";
+		echo "<script src=\"http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22" . htmlentities($query_string) . "%22%20and%20compat%3D%22html5%22%20and%20xpath%3D%22%2F%2Fdiv%5Bcontains(%40class%2C'product_detail')%5D%2Ftable%2Ftbody%2Ftr%2Ftd%5B3%5D%2Fp%5B1%5D%22&diagnostics=true&format=xml&callback=productDesc\"></script>";
+	}
+?>
+
+
+
+<!--
+<script src="http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fstore.coastalfarm.com%2Fproducts%2Fmtl-solar-cat-light%257C143485.html%22%20and%20compat%3D%22html5%22%20and%20xpath%3D%22%2F%2Fdiv%5Bcontains(%40class%2C'product_detail')%5D%2Fspan%22&format=xml&callback=productTitle"></script>
+<script src="http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fstore.coastalfarm.com%2Fproducts%2Fmtl-solar-cat-light%257C143485.html%22%20and%20compat%3D%22html5%22%20and%20xpath%3D%22%2F%2Fdiv%5Bcontains(%40class%2C'product_detail')%5D%2Ftable%2Ftbody%2Ftr%2Ftd%5B1%5D%2Fimg%22&diagnostics=true&format=xml&callback=productImage"></script>
+<script src="http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D%22http%3A%2F%2Fstore.coastalfarm.com%2Fproducts%2Fmtl-solar-cat-light%257C143485.html%22%20and%20compat%3D%22html5%22%20and%20xpath%3D%22%2F%2Fdiv%5Bcontains(%40class%2C'product_detail')%5D%2Ftable%2Ftbody%2Ftr%2Ftd%5B3%5D%2Fp%5B1%5D%22&diagnostics=true&format=xml&callback=productDesc"></script>
+-->
+<!--
+image:
+select * from html where url="http://store.coastalfarm.com/products/mtl-solar-cat-light%7C143485.html" and compat="html5" and xpath="//div[contains(@class,'product_detail')]/table/tbody/tr/td[1]/img"
+
+description:
+select * from html where url="http://store.coastalfarm.com/products/mtl-solar-cat-light%7C143485.html" and compat="html5" and xpath="//div[contains(@class,'product_detail')]/table/tbody/tr/td[3]/p[1]"
+-->
+
+
+    """

@@ -1,0 +1,19 @@
+'.text.html':
+
+  'jQuery Document Ready':
+    'prefix':'jquery-documentready'
+    'body':"""
+      <script>
+      $(document).ready(function() {
+
+
+
+      });
+      </script>
+    """
+
+  'jQuery Include Library':
+    'prefix':'jquery-include'
+    'body':"""
+      <script type="text/javascript" src="${1:<?php echo get_bloginfo('template_directory'); ?>|<?php echo bloginfo('template_url'); ?>}.js"></script>
+    """

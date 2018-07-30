@@ -1,0 +1,28 @@
+'.text.html':
+
+  'Analytic Event - Iframe click':
+    'prefix':'analytic-iframe'
+    'body':"""
+      jQuery('.sts-spin iframe').iframeTracker({
+        blurCallback: function(){
+          gtag('event', '${1:EventName}', {'event_label': '${2:EventLabel}','event_category': '${3:EventCategory}','non_interaction': false});
+          console.log('focused on the iframe');
+        }
+      });
+      """
+
+  'Analytic Event - Listener click':
+    'prefix':'analytic-listener'
+    'body':"""
+      var els = document.querySelectorAll(".hero");
+      for(i = 0; i < els.length; i++) {
+        //els[i].setAttribute("data-tracked", "false");
+        els[i].addEventListener("mousedown", function() {
+          //if(this.getAttribute("data-tracked") == "false") {
+            gtag('event', '${1:EventName}', {'event_label': '${2:EventLabel}','event_category': '${3:EventCategory}','non_interaction': false});
+        	  //ga("send", "event", "Navigation", "Main Item Hover", this.childNodes[0].innerText);
+            //this.setAttribute("data-tracked", "true");
+          //}
+        }, false);
+      }
+      """

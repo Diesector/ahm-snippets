@@ -1,0 +1,12 @@
+'.text.html.php':
+
+  'URL Sub-Domain Scrape Query':
+    'prefix':'url-subdomain'
+    'body':"""
+      $isBeta = stristr($_SERVER["SERVER_NAME"], 'beta') ? true : false;
+
+      if ($isBeta) {
+          echo "is beta: true" . PHP_EOL;
+      }
+
+  """
