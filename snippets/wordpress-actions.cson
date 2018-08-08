@@ -1,0 +1,24 @@
+'.text.html':
+
+  'Wordpress - Do Shortcode':
+    'prefix':'wp-theme-doshortcode'
+    'body':"""
+        echo do_shortcode('');
+    """
+
+  'Wordpress - Theme Location':
+    'prefix':'wp-theme-locations'
+    'body':"""
+
+        echo get_template_directory_uri();
+        echo get_bloginfo('template_directory');
+
+    """
+
+  'Wordpress - Redirect':
+    'prefix':'wp-redirect'
+    'body':"""
+      <?php
+         header( 'Location: ' . site_url() ) ;
+      ?>
+    """

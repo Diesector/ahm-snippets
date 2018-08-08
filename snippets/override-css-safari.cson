@@ -3,7 +3,7 @@
   'Override for Safari 10+ in CSS':
     'prefix':'override-safari'
     'body':"""
-      @media not all and (min-resolution:.001dpcm) { @media {
-          ${1:/*overrides for safari here */}
-      }}
+        @media not all and (min-resolution:.001dpcm) { @media {
+        ${1:/*overrides for safari here */}
+        }}
     """

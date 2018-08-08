@@ -1,82 +1,134 @@
 '.text.html':
 
-  'Wordpress Functions.php - jQuery Replace':
-    'prefix':'wordpress-jquery-replace'
+  'Wordpress Functions.php - Remove Category from Permalink':
+    'prefix':'wp-deregister'
     'body':"""
-
-      add_filter( 'wp_default_scripts', 'dequeue_jquery_migrate' );
-
-      function dequeue_jquery_migrate( &$scripts){
-      	if(!is_admin()){
-      		$scripts->remove( 'jquery');
-      		$scripts->add( 'jquery', false, array( 'jquery-core' ), '1.10.2' );
-      	}
-      }
-      //Making jQuery Google API
-      function modify_jquery() {
-          if (!is_admin()) {
-              // comment out the next two lines to load the local copy of jQuery
-              wp_deregister_script('jquery');
-              wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', false, '1.9.1');
-              wp_enqueue_script('jquery');
-          }
-      }
-      add_action('init', 'modify_jquery');
+    function remove_category( $string, $type )    {
+        if ( $type != 'single' && $type == 'category' && ( strpos( $string, 'category' ) !== false ) )
+        {
+        $url_without_category = str_replace( "/category/", "/", $string );
+        return trailingslashit( $url_without_category );
+        }
+        return $string;
+    }
+    add_filter( 'user_trailingslashit', 'remove_category', 100, 2);
     """
 
-  'Wordpress Walker Class':
-    'prefix':'wordpress-walker'
+  'Wordpress Functions.php - Login Scripts/Styles':
+    'prefix':'wp-login-scripts'
     'body':"""
-      <nav class="nav" role="navigation">
-        <?php
-        wp_nav_menu(
-          array(
-            'items_wrap'=> '%3$s',
-            'walker' => new Nav_Footer_Walker(),
-            'container'=>false,
-            'menu_class' => '',
-            'theme_location'=>'Primary',
-            'fallback_cb'=>false
-          )
-        );
-        //html5blank_nav(); ?>
-      </nav>
-      <?php
-      //in functions.php add..
-      class Nav_Footer_Walker extends Walker_Nav_Menu {
-            	function start_lvl( &$output, $depth = 0, $args = array() ) {
-            		$indent = str_repeat("\t", $depth);
-            		$output .= "\n$indent\n";
-            	}
-            	function end_lvl( &$output, $depth = 0, $args = array() ) {
-            		$indent = str_repeat("\t", $depth);
-            		$output .= "$indent\n";
-            	}
-            	function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
-            		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
-            		$class_names = $value = '';
-            		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
-            		$classes[] = 'menu-item-' . $item->ID;
-            		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args ) );
-            		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
-            		$id = apply_filters( 'nav_menu_item_id', 'menu-item-'. $item->ID, $item, $args );
-            		$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
-            		$output .= $indent . '';
-            		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
-            		$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
-            		$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
-            		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : '';
-            		$item_output = $args->before;
-      		$item_output .= '<a'. $attributes .'>';
-      		$item_output .= $args->link_before . apply_filters( 'the_title', $item->title, $item->ID ) . $args->link_after;
-      		$item_output .= '</a>';
-      		$item_output .= $args->after;
-      		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
-      	}
-      	function end_el( &$output, $item, $depth = 0, $args = array() ) {
-      		$output .= "\n";
-      	}
-      }
-      ?>
+        $('#user_login').attr( 'placeholder', 'Username' );
+        $('#user_pass').attr( 'placeholder', 'Password' );
 
+        function themeslug_enqueue_script() {
+        	wp_enqueue_script( 'my-js', 'filename.js', false );
+        }
+
+        add_action( 'login_enqueue_scripts', 'themeslug_enqueue_style', 10 );
+        add_action( 'login_enqueue_scripts', 'themeslug_enqueue_script', 1 );
+    """
+
+  'Wordpress Functions.php - De-Enqueue Scripts/Styles':
+    'prefix':'wp-deregister'
+    'body':"""
+        /**
+         * Dequeue the Parent Theme scripts.
+         *
+         * Hooked to the wp_print_scripts action, with a late priority (100),
+         * so that it is after the script was enqueued.
+         */
+        function my_site_WI_dequeue_script() {
+        	wp_dequeue_script( 'comment-reply' ); //If you're using disqus, etc.
+        	wp_dequeue_script( 'jquery_ui' ); //jQuery UI, no thanks!
+        	wp_dequeue_script( 'fancybox' ); //Nah, I use FooBox
+        	wp_dequeue_script( 'wait_for_images' );
+        	wp_dequeue_script( 'jquery_easing' );
+        	wp_dequeue_script( 'swipe' );
+        	wp_dequeue_script( 'waypoints' );
+        }
+
+        add_action( 'wp_print_scripts', 'my_site_WI_dequeue_script', 100 );
+
+        /**
+         * Dequeue the Parent Theme styles.
+         *
+         * Hooked to the wp_enqueue_scripts action, with a late priority (100),
+         * so that it runs after the parent style was enqueued.
+         */
+
+        function give_dequeue_plugin_css() {
+        wp_dequeue_style('additional-parent-style');
+        wp_deregister_style('additional-parent-style');
+        }
+        add_action('wp_enqueue_scripts','give_dequeue_plugin_css', 100);
+    """
+
+  'Wordpress Functions.php - jQuery Replace':
+    'prefix':'wp-jquery-replace'
+    'body':"""
+
+        add_filter( 'wp_default_scripts', 'dequeue_jquery_migrate' );
+
+        function dequeue_jquery_migrate( &$scripts){
+        	if(!is_admin()){
+        		$scripts->remove( 'jquery');
+        		$scripts->add( 'jquery', false, array( 'jquery-core' ), '1.10.2' );
+        	}
+        }
+        //Making jQuery Google API
+        function modify_jquery() {
+        if (!is_admin()) {
+        // comment out the next two lines to load the local copy of jQuery
+        wp_deregister_script('jquery');
+        wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js', false, '1.9.1');
+        wp_enqueue_script('jquery');
+        }
+        }
+        add_action('init', 'modify_jquery');
+    """
+
+  'Wordpress Functions.php - Walker':
+    'prefix':'wp-walker-functions'
+    'body':"""
+<?php
+if ( ! file_exists( get_template_directory() . '/client-assets/walker.php' ) ) {
+	return new WP_Error( 'walker-missing', __( 'walker.php missing.', 'walker-missing' ) );
+} else {
+	// file exists... require it.
+  require_once get_template_directory() . '/client-assets/walker.php';
+  function prefix_modify_nav_menu_args( $args ) {
+  	return array_merge( $args, array(
+  		'walker' => WP_Bootstrap_Navwalker(),
+  	) );
+  }
+  add_filter( 'wp_nav_menu_args', 'prefix_modify_nav_menu_args' );
+}
+?>
+    """
+
+  'Wordpress Template - Walker Usage':
+    'prefix':'wp-walker-template'
+    'body':"""
+
+<nav class="navbar navbar-expand-md navbar-light bg-light" role="navigation">
+  <div class="container">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-controls="bs-example-navbar-collapse-1" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<a class="navbar-brand" href="#">Navbar</a>
+		<?php
+		wp_nav_menu( array(
+			'theme_location'    => 'primary',
+			'depth'             => 2,
+			'container'         => 'div',
+			'container_class'   => 'collapse navbar-collapse',
+			'container_id'      => 'bs-example-navbar-collapse-1',
+			'menu_class'        => 'nav navbar-nav',
+			'fallback_cb'       => 'WP_Bootstrap_Navwalker::fallback',
+			'walker'            => new WP_Bootstrap_Navwalker(),
+		) );
+		?>
+	</div>
+</nav>
     """

@@ -1,12 +1,17 @@
-'.text.html.php':
+'.text.html':
 
   'URL Sub-Domain Scrape Query':
     'prefix':'url-subdomain'
     'body':"""
-      $isBeta = stristr($_SERVER["SERVER_NAME"], 'beta') ? true : false;
-
-      if ($isBeta) {
-          echo "is beta: true" . PHP_EOL;
-      }
-
-  """
+        $isBeta = stristr($_SERVER["SERVER_NAME"], 'beta') ? true : false;
+        if ($isBeta) {
+        echo "is beta: true" . PHP_EOL;
+        }
+    """
+  'URL Permalink':
+    'prefix':'url-permalink'
+    'body':"""
+        $_SERVER['REQUEST_URI_PATH'] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $segments = explode('/', substr($_SERVER['REQUEST_URI_PATH'], 1));
+        if ($segments[0] == "blog"){ $get_sidebar = 'blog-sidebar'; }
+    """

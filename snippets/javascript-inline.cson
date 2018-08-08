@@ -3,5 +3,5 @@
   'JS Inline Click Open':
     'prefix':'js-inline-click-open'
     'body':"""
-      onclick="window.open( '${1:url}', '_blank' );"
+        onclick="window.open( '${1:url}', '_blank' );"
     """

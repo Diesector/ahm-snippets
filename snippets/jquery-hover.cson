@@ -1,0 +1,18 @@
+'.text.html':
+
+  'Hover Class Toggle':
+    'prefix':'hover-class-toggle'
+    'body':"""
+      $("${1:Selector}").on({
+      	"mouseenter": function(){
+      		$('${1}.active').not(this).removeClass('active');
+      		$(this).toggleClass('active');
+      		$(this).children('SELECTORSUB').toggleClass('active');
+      	},
+      	"mouseleave": function(){
+      		$('${1}R.active').not(this).removeClass('active');
+      		$(this).toggleClass('active');
+      		$(this).children('SELECTORSUB').toggleClass('active');
+      	}
+      });
+    """

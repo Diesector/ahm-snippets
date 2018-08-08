@@ -3,16 +3,16 @@
   'Detect - Class Change':
     'prefix':'detect-class-change'
     'body':"""
-      var $target1 = $("${1:Selector}");
-      var observer1 = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.attributeName === "class") {
-            var attributeValue = $(mutation.target).prop(mutation.attributeName);
-            console.log("Class attribute changed to:", attributeValue);
-          }
+        var $target1 = $("${1:Selector}");
+        var observer1 = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.attributeName === "class") {
+    var attributeValue = $(mutation.target).prop(mutation.attributeName);
+    console.log("Class attribute changed to:", attributeValue);
+        }
+    });
         });
-      });
-      observer1.observe($target1[0], {
-        attributes: true
-      });
+        observer1.observe($target1[0], {
+    attributes: true
+        });
     """

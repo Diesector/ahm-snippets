@@ -3,51 +3,51 @@
   'Trigger Click':
     'prefix':'click-trigger'
     'body':"""
-      $( "${1:Selector}" ).trigger( "click" );
+        $( "${1:Selector}" ).trigger( "click" );
     """
 
   'Click Rebind':
     'prefix':'click-rebind'
     'body':"""
-      $('${1:Selector}').bind('click', function() {
-      	var path = $(this).attr('href');
-      	document.location = path;
-      	return true;
-      });
+        $('${1:Selector}').bind('click', function() {
+        	var path = $(this).attr('href');
+        	document.location = path;
+        	return true;
+        });
 
-      //$('$1').click(function () {return false;});
-      $('$1').unbind('click');
+        //$('$1').click(function () {return false;});
+        $('$1').unbind('click');
     """
 
   'Enter Key Clicks':
     'prefix':'click-enter'
     'body':"""
-      $('${1:document|Selector}').keypress(function (e) {
-       var key = e.which;
-       if(key == 13)  // the enter key code
-        {
-          $('#geocode').click();
-          return false;
-        }
-      });
+        $('${1:document|Selector}').keypress(function (e) {
+         var key = e.which;
+         if(key == 13)    // the enter key code
+    {
+        $('#geocode').click();
+        return false;
+    }
+        });
     """
 
   'Click - Detect and Trigger':
     'prefix':'click-detect-single'
     'body':"""
-      $( "${1:Selector}" ).click(function() {
-        alert( "Handler for .click() called." );
-      });
+        $( "${1:Selector}" ).click(function() {
+    alert( "Handler for .click() called." );
+        });
     """
 
   'Click Each - Detect and Trigger':
     'prefix':'click-detect-multi'
     'body':"""
-      $( "${1:Selector}" ).each(function(index) {
-          $(this).on("click", function(){
-              var dataKey = $(this).data('selected');
-              var idKey = $(this).attr('id');
-              console.log( dataKey + " " idKey);
-          });
-      });
+        $( "${1:Selector}" ).each(function(index) {
+        $(this).on("click", function(){
+        var dataKey = $(this).data('selected');
+        var idKey = $(this).attr('id');
+        console.log( dataKey + " " idKey);
+        });
+        });
     """

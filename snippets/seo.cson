@@ -2,40 +2,40 @@
   'SEO A/B Testing Theme Template':
     'prefix':'seo-abtest-template'
     'body':"""
-  		<?php
-  		$menu = '';
-  		$betaMenu = isset($_GET['betaMenu']) ? $_GET['betaMenu'] : '';
-  		$input = array("390", "2");
-  		if( $betaMenu != '') {
-  			if( $betaMenu == 'test-a') {
-  				$menu = '390';
-  			};
-  			if( $betaMenu == 'test-b') {
-  				$menu = '2';
-  			};
-  			if( $betaMenu == 'test-all') {
-  				$menu = array_random($input);
-  			};
-  			if( $menu == '390') {
-  				get_template_part("include","menu-overrides");
-  			};
+        		<?php
+        		$menu = '';
+        		$betaMenu = isset($_GET['betaMenu']) ? $_GET['betaMenu'] : '';
+        		$input = array("390", "2");
+        		if( $betaMenu != '') {
+        			if( $betaMenu == 'test-a') {
+        				$menu = '390';
+        			};
+        			if( $betaMenu == 'test-b') {
+        				$menu = '2';
+        			};
+        			if( $betaMenu == 'test-all') {
+        				$menu = array_random($input);
+        			};
+        			if( $menu == '390') {
+        				get_template_part("include","menu-overrides");
+        			};
 
-  		} else {
-  			if( is_singular() ) {
-  				$menu = ts_get_post_opt('header-primary-menu');
-  			}
-  		}
+        		} else {
+        			if( is_singular() ) {
+        				$menu = ts_get_post_opt('header-primary-menu');
+        			}
+        		}
 
-  		if (has_nav_menu('primary')):
-  			wp_nav_menu(array(
-  				'theme_location'	=> 'primary',
-  				'menu'				=> $menu,
-  				'container'			=> false,
-  				'menu_id'			=> 'primary-nav',
-  				'menu_class'		=> 'clearlist scroll-nav local-scroll',
-  				'depth'				=> 3,
-  				'walker'			=> new rhythm_menu_widget_walker_nav_menu,
-  			));
-  		endif;
-  		?>
+        		if (has_nav_menu('primary')):
+        			wp_nav_menu(array(
+        				'theme_location'	=> 'primary',
+        				'menu'				=> $menu,
+        				'container'			=> false,
+        				'menu_id'			=> 'primary-nav',
+        				'menu_class'		=> 'clearlist scroll-nav local-scroll',
+        				'depth'				=> 3,
+        				'walker'			=> new rhythm_menu_widget_walker_nav_menu,
+        			));
+        		endif;
+        		?>
     """
