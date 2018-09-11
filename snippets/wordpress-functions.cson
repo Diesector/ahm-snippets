@@ -63,6 +63,18 @@
         add_action('wp_enqueue_scripts','give_dequeue_plugin_css', 100);
     """
 
+  'Wordpress Functions.php - De-Register Taxonomy':
+    'prefix':'wp-deregister-taxonomy'
+    'body':"""
+
+      function wpc_unregister_job_listing_type() {
+      	unregister_taxonomy('Type'); // Specify the taxonomy to unregister
+      	unregister_taxonomy('author'); // Specify the taxonomy to unregister
+      }
+      add_action('init', 'wpc_unregister_job_listing_type');
+
+    """
+
   'Wordpress Functions.php - jQuery Replace':
     'prefix':'wp-jquery-replace'
     'body':"""
@@ -131,4 +143,72 @@ if ( ! file_exists( get_template_directory() . '/client-assets/walker.php' ) ) {
 		?>
 	</div>
 </nav>
+    """
+
+  'Wordpress - Get Truncated':
+    'prefix':'wp-get-truncate'
+    'body':"""
+      <?php
+        function ShortTitle($text,chars_limit){
+        	$chars_text = strlen($chars_limit);
+        	$text = $text." ";
+        	$text = substr($text,0,$chars_limit);
+        	$text = substr($text,0,strrpos($text,' '));
+        	if ($chars_text > $chars_limit){
+        		$text = $text."...";
+        	}
+        	return $text;
+        }
+
+        // usage <?php echo ShortTitle(get_the_title()); ?>
+      ?>
+    """
+
+  'Wordpress - Set Images':
+    'prefix':'wp-images'
+    'body':"""
+      // THEME THUMBNAIL SIZES REGISTERED
+      if ( function_exists( 'add_theme_support' ) ) {
+      	add_theme_support( 'post-thumbnails' );
+              set_post_thumbnail_size( 323, 182, true ); // default Post Thumbnail dimensions
+      }
+
+      if ( function_exists( 'add_image_size' ) ) {
+      }
+      // THEME THUMBNAIL SIZES REGISTERED
+
+      add_action( 'after_setup_theme', 'wpdocs_theme_setup' );
+      function wpdocs_theme_setup() {
+
+      	add_image_size( 'medium', 200, 0, true );
+      	add_image_size( 'large', 300, 0, true );
+      	add_image_size( 'inSearch', 200, 200, true ); //300 pixels wide (and unlimited height)
+      	add_image_size( 'isFeatureSelected', 1018, 556, true ); //(cropped)
+      	add_image_size( 'inCategory', 323, 182, true ); // default Post Thumbnail dimensions
+      	add_image_size( 'inPost-banner', 700, 394, true );
+      	add_image_size( 'inPost-float', 230, 0, true );
+      }
+      function paulund_remove_default_image_sizes( $sizes) {
+          unset( $sizes['medium']);
+          unset( $sizes['large']);
+          return $sizes;
+      }
+      add_filter('intermediate_image_sizes_advanced', 'paulund_remove_default_image_sizes');
+
+
+      if ( function_exists( 'add_image_size' ) ) {
+      	//add_image_size( 'post-thumbnail', 0, 0 );
+      	add_image_size( 'medium', 600, 0, true );
+      	//add_image_size( 'large', 300, 0, true );
+      	//add_image_size( 'inSearch', 280, 65, true ); //300 pixels wide (and unlimited height)
+      	//add_image_size( 'isFeatureSelected', 1018, 556, true ); //(cropped)
+      	//add_image_size( 'inCategory', 323, 182, true ); // default Post Thumbnail dimensions
+      	//add_image_size( 'twentyfourteen-full-width', 0, 0, true );
+      	//add_image_size( 'inHome-parallax', 1700, 0, true );
+      	//add_image_size( 'inPost-fullscreen', 1920, 1080, true );
+      	//add_image_size( 'inPost-fullbleed', 1700, 400, true );
+      	//add_image_size( 'inPost-banner', 1025, 394, true );
+      	//add_image_size( 'inPost-slider', 1025, 285, true );
+      	//add_image_size( 'inPost-float', 300, 0, true );
+      }
     """

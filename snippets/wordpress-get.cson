@@ -1,0 +1,136 @@
+'.text.html':
+  'Wordpress - wp-get-custom-field':
+    'prefix':'wp-get-id-slug'
+    'body':"""
+        <?php $key="myCustomField"; if( get_post_meta($post->ID, $key, true) ) { ?>
+        	This Field: <?php echo get_post_meta($post->ID, $key, true); ?>
+        <?php } ?>
+      """
+  'Wordpress - wp-get-id-slug':
+    'prefix':'wp-get-id-slug'
+    'body':"""
+        function get_ID_by_slug($page_slug) {
+            $page = get_page_by_path($page_slug);
+            if ($page) {
+                return $page->ID;
+            } else {
+                return null;
+            }
+        }
+      """
+  'Wordpress - wp-get-body-class':
+    'prefix':'wp-get-body-class'
+    'body':"""
+      <?php
+        $classes = get_body_class();
+        if (in_array('THECLASS',$classes)) {
+
+
+
+        } else {
+
+
+
+        }
+      ?>
+    """
+
+  'Wordpress - wp-get-id':
+    'prefix':'wp-get-id'
+    'body':"""
+        get_the_ID()	//returns ID (better for functions)
+        the_ID()		//displays ID
+      """
+  'Wordpress - wp-get-term-query':
+    'prefix':'wp-get-term-query'
+    'body':"""
+        <?php
+          echo get_query_var( 'taxonomy' );
+          echo get_query_var( 'term' );
+          // or....
+          $tax = $wp_query->get_queried_object();
+          echo ''. $tax->name . '';
+          echo "<br>";
+          echo ''. $tax->description .'';
+        ?>
+      """
+  'Wordpress - wp-get-content':
+    'prefix':'wp-get-content'
+    'body':"""
+      echo apply_filters('the_content', $post->post_content);
+      <?php if (have_posts()) : while (have_posts()) : the_post(); ?><?php if (is_search()) the_excerpt(); else the_content(__('Read the rest of this entry &raquo;', 'kubrick')); ?><?php endwhile; endif; ?>
+      """
+  'Wordpress - wp-get-content-truncate':
+    'prefix':'wp-get-excerpt-truncate'
+    'body':"""
+      function truncate_content_character($text,$characters){
+      	$excerpt = $text;
+      	$excerpt = preg_replace(" (\[.*?\])",'',$excerpt);
+      	$excerpt = strip_shortcodes($excerpt);
+      	$excerpt = strip_tags($excerpt);
+      	$excerpt = substr($excerpt, 0, $characters);
+      	$excerpt = substr($excerpt, 0, strripos($excerpt, " "));
+      	$excerpt = trim(preg_replace( '/\s+/', ' ', $excerpt));
+      	//$excerpt = $excerpt.'... <a href="'.$permalink.'">more</a>';
+      	return $excerpt;
+      }
+      $excerpt = apply_filters('the_excerpt', get_post_field('post_excerpt', $single->ID));
+      echo truncate_content_character($excerpt,'41');
+      """
+  'Wordpress - wp-get-page-by-slug':
+    'prefix':'wp-get-page-by-slug'
+    'body':"""
+        function get_page_by_slug($page_slug, $output, $post_type ) {
+        	global $wpdb;
+        	$page = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name = %s AND post_type= %s AND post_status = 'publish'", $page_slug, $post_type ) );
+        	if ( $page ) return get_post($page, $output);
+        	return null;
+        }
+        // usage:  get_page_by_slug($page_slug, OBJECT, $post_type );
+      """
+
+  'Wordpress - wp-get-excerpt-by-id':
+    'prefix':'wp-get-excerpt-by-id'
+    'body':"""
+        function get_excerpt_by_id($post_id,$excerpt_length){
+        	$the_post = get_post($post_id); //Gets post ID
+        	$the_excerpt = $the_post->post_content; //Gets post_content to be used as a basis for the excerpt
+        	$the_excerpt = strip_tags(strip_shortcodes($the_excerpt)); //Strips tags and images
+        	$words = explode(' ', $the_excerpt, $excerpt_length + 1);
+        	if(count($words) > $excerpt_length) :
+        		array_pop($words);
+        		array_push($words, '…');
+        		$the_excerpt = implode(' ', $words);
+        	endif;
+        	$the_excerpt = '<p>' . $the_excerpt . '</p>';
+        	return $the_excerpt;
+        }
+      """
+  'Wordpress - wp-get-excerpt-by-id-usage':
+    'prefix':'wp-get-excerpt-by-id-usage'
+    'body':"""
+        get_excerpt_by_id($post_id,$excerpt_length);
+      """
+  'Wordpress - wp-get-taxonomy-list':
+    'prefix':'wp-get-taxonomy-list'
+    'body':"""
+
+      $project_terms = wp_get_object_terms( $post->ID,  'work_category' );
+
+      if ( $project_terms ) {
+      	if ( ! is_wp_error( $project_terms ) ) {
+
+      		foreach( $project_terms as $term ) {
+      			$values != "" && $values .= ",";
+      			$values .= $term->slug;
+      		}
+      		echo $values;
+
+      	}
+      }
+
+      ... or ....
+
+      <?php echo get_the_term_list( $post->ID, 'style', '<ul class="styles"><li>', ',</li><li>', '</li></ul>' ); ?>
+
+      """

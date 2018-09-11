@@ -1,0 +1,126 @@
+'.text.html':
+
+  'Scrollmagic Template':
+    'prefix':'scrollmagic-templatey'
+    'body':"""
+      <?php
+      get_header();
+      ?>
+
+      <script type="text/javascript">
+      	jQuery(window).on("load resize", function(){
+      		var url = window.location.origin + window.location.pathname;
+      		delayit = setTimeout(function(){
+      			var w = jQuery(window).width();
+      			if (w < 992) {
+      				window.location = url + '?storyMobile';
+      			};
+      		});
+      	});
+      	var page_controller = new ScrollMagic.Controller({
+      		refreshInterval: 1000,
+      		globalSceneOptions: {
+      			triggerHook: 0
+      		}
+      	});
+      </script>
+      </head>
+
+      ...
+
+      <!-- start of potential scrollmagic loop -->
+      <section id="<?php echo $counter; ?>" name="<?php echo $counter; ?>" class="scrollify_pager">
+      	<!-- <a class="section_hash" id="<?php //echo $counter + 1; ?>" name="<?php //echo $counter + 1; ?>"></a> -->
+      	<div class="target"><div style="background-color: red; width: 100px; height: 100px;"></div></div>
+      	<script type="text/javascript">
+      		jQuery(function ($) {
+      			//custom trigger slide
+      			//jQuery( ".subnav a[href*='_<?php echo $counter; ?>']" ).each(function(index) {
+      			//	jQuery(this).on("click", function(){
+      					//$.scrollify("move","#section_"+<?php echo $counter; ?>");
+      			//	});
+      			//});
+
+      			//tweens
+      			var tween_bar<?php echo $counter; ?> = new TimelineMax().add([
+      				TweenMax.to(".subnav ul > li > a[href*='#section_<?php echo $counter; ?>']", 0.2, {
+      					delay: 0,
+      					//css:{ opacity: 0 },
+      					onStart:function(){
+      						//$(".subnav ul > li > a").toggleClass('active_bar');
+      						$(".subnav ul > li > a[href*='#section_<?php echo $counter; ?>']").toggleClass('active_bar');
+      					},
+      					onReverseComplete:function(){$(".subnav ul > li > a[href*='#section_<?php echo $counter; ?>']").removeClass('active_bar');
+      				},immediateRender:true, force3D:true, ease: Power0.easeNone  }),
+      			]);
+
+      			//set active in subnav
+      			var sectionTrigger_<?php echo $counter; ?> = new ScrollMagic.Scene({ reverse: true, passive: false, duration: 2000, triggerElement: "<?php echo $counter; ?>"  }).setTween(tween_bar<?php echo $counter; ?>);
+
+      			//pin scene
+      			var pin_section<?php echo $counter; ?> = new ScrollMagic.Scene({ reverse: true, passive: false, duration: 2000, triggerElement: "<?php echo $counter; ?>"  }).setPin("#section_<?php echo $counter; ?>");
+
+      			//animation example
+      			var tween_section<?php echo $counter; ?>_main1			=	TweenMax.to('<?php echo $counter; ?> .target', 0.25, { delay: 0, css:{ left: "50%", width: "50%" }, immediateRender:true, force3D:true, ease: Power0.easeNone  });
+
+      			page_controller.addScene([
+      				sectionTrigger_<?php echo $counter; ?>,
+      				pin_section<?php echo $counter; ?>,
+
+      				new ScrollMagic.Scene({ reverse: true, passive: false, offset: 0, triggerElement: "<?php echo $counter; ?>"  }).setTween(tween_section<?php echo $counter; ?>_main1),
+      			]);
+
+      		});
+      	</script>
+      </section>
+      <!-- end of potential scrollmagic loop -->
+      <script type="text/javascript">
+      	jQuery(function ($) {
+      		function pageProgressLine(){
+      			var count = jQuery("#masthead .subnav > ul").children('li').length;
+      			var pageProgressLine = ((jQuery(window).height() * (count-1)) * 2); //6 is the gap
+      			//console.log('count:' + count * 2);
+      			return pageProgressLine;
+      		};
+      		function pageProgress(){
+      			var count = jQuery("#masthead .subnav > ul").children('li').length;
+      			var pageProgress = ((jQuery(window).height() * (count-0)) * 2);
+      			//console.log('count:' + count * 2);
+      			return pageProgress;
+      		};
+      		var distance = pageProgressLine();
+      		var barTween = new TimelineMax().add([
+      			TweenMax.to('#masthead .subnav .line > .bar', 1, { ease: Power0.easeNone, delay: 0, css:{ width: "100%", opacity: 1}, immediateRender:true, force3D:true, ease: Power0.easeNone  })
+      		]);
+      		var barScene = new ScrollMagic.Scene({
+      			triggerElement: "body", // point of execution
+      			duration: distance, // pin element for the window height - 1
+      			triggerHook: 0, // don't trigger until #pinned-trigger1 hits the top of the viewport
+      			reverse: true // allows the effect to trigger when scrolled in the reverse direction
+      		}).setTween(barTween);
+      		page_controller.addScene([barScene]);
+
+      	});
+      </script>
+
+      <?php
+      get_footer();
+
+    """
+
+  'Scrollmagic Scripts':
+    'prefix':'scrollmagic-scripts'
+    'body':"""
+
+    	wp_enqueue_script( 'highlight',get_bloginfo('template_directory') . '/client-assets/scrollmagic/js/lib/highlight.pack.js');
+    	wp_enqueue_script( 'velocity',get_bloginfo('template_directory') . '/client-assets/scrollmagic/js/lib/velocity.min.js');
+    	wp_enqueue_script( 'tweenmax',get_bloginfo('template_directory') . '/client-assets/scrollmagic/js/lib/greensock/TweenMax.min.js');
+    	wp_enqueue_script( 'timelinemax',get_bloginfo('template_directory') . '/client-assets/scrollmagic/js/lib/greensock/TimelineMax.min.js');
+    	wp_enqueue_script( 'scrollmagic',get_bloginfo('template_directory') . '/client-assets/scrollmagic/scrollmagic/minified/ScrollMagic.min.js');
+    	wp_enqueue_script( 'animation',get_bloginfo('template_directory') . '/client-assets/scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js');
+    	wp_enqueue_script( 'animation-velocity',get_bloginfo('template_directory') . '/client-assets/scrollmagic/scrollmagic/minified/plugins/animation.velocity.min.js');
+    	//wp_enqueue_script( 'vivus',get_bloginfo('template_directory') . '/client-assets/scrollmagic/js/vivus.js');
+      wp_enqueue_script( 'indicators',get_bloginfo('template_directory') . '/client-assets/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js');
+
+
+      """

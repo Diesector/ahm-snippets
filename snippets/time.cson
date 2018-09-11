@@ -6,3 +6,13 @@
         $timestamp = "1428020593"
         $ts = gmdate("m-d-y H:i:s", $timestamp);
         """
+
+  'Server Reset Time':
+    'prefix':'time-reset'
+    'body':"""
+thiscommand to check
+$ date
+
+thiscommand to reset
+$ sudo dpkg-reconfigure tzdata
+        """

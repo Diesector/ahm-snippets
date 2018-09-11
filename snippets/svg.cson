@@ -1,26 +1,24 @@
 '.text.html':
 
   'SVG HTML Symbol Include':
-    'prefix':'svg-template-include'
+    'prefix':'svg-template-usage'
     'body':"""
-        		<svg class="" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  		<svg class="" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
-        			<use xlink:href="#${1:id}" data-fallback=""/>
+  			<use xlink:href="#${1:id}" data-fallback=""/>
 
-        		</svg>
-
-        """
+  		</svg>
+      """
 
   'SVG HTML Symbol Library':
     'prefix':'svg-template-include'
     'body':"""
+      <div class="svg-legend" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg">
 
-    <div class="svg-legend" aria-hidden="true">
-    <svg xmlns="http://www.w3.org/2000/svg">
+      <symbol viewBox="0 0 250 250" id="${1:id}">
+      </symbol>
 
-    <symbol viewBox="0 0 250 250" id="${1:id}">
-    </symbol>
-
-    </svg>
-    </div>
-    """
+      </svg>
+      </div>
+      """

@@ -1,0 +1,148 @@
+'.text.html':
+
+  'Wordpress Query - Find Values in Array':
+    'prefix':'wp-query-findvalues'
+    'body':"""
+      <?php $punjab= array ('Ludhiana','Doraha','Jagraon','Moga','Phillaur','Ahmedgarh'); print_r($punjab); $pos = array_search('Ludhiana', $punjab); echo 'Phillaur found at: '.$pos; ?>
+      """
+
+  'Wordpress Query - Override':
+    'prefix':'wp-query-override'
+    'body':"""
+        <?php $posts=query_posts($query_string . '&order=asc&orderby=meta_value&meta_key=event_date_time'); if ( have_posts() ):
+
+        while ( have_posts() ) : the_post();
+
+        endwhile;
+
+        twentyfourteen_paging_nav();
+
+        else :
+
+        	get_template_part( 'content', 'none' );
+
+        endif;
+        ?>
+      """
+
+  'Wordpress Query - Full Array Loop Function':
+    'prefix':'wp-query'
+    'body':"""
+      function theTemplate ($hasposts,$category) {
+
+      	if($hasposts): foreach($hasposts as $post) : setup_postdata($post);
+
+      		// echo get_the_post_thumbnail($post->ID, 'medium');
+      		echo "<h1>" . get_the_title($post) . "&nbsp;&nbsp;";
+
+      		//$key = 'price';
+      		//$keyExists = get_post_meta($post->ID, $key, true);
+      		//if( get_post_meta($post->ID, $key, true) ) { echo get_post_meta($post->ID, $key, true); }
+      		echo "</h1><div>";
+
+      		$stripContent = strip_tags(nl2br( get_post_field('post_content', $post->ID) ),'');
+      		echo $stripContent . "</div>";
+
+      	endforeach; else: endif;
+
+      	wp_reset_query();
+
+      }
+
+      $url_year = substr(substr($_SERVER["REQUEST_URI"],1), 0, strpos(substr($_SERVER["REQUEST_URI"],1), "/"));
+      $url_month = substr(substr($_SERVER["REQUEST_URI"],2), 0, strpos(substr($_SERVER["REQUEST_URI"],1), "/"));
+
+      function thequery($category){
+      	$args = array(
+
+      		//'year' => $url_year,
+      		//'month' => $url_month,
+      		//'post_type' => array('any'),
+      		//'tag'           	 => '',
+      		//'posts_per_page'   => 5,
+      		//'offset'           => 0,
+      		//'category'         => '',
+      		//'orderby'          => 'post_date', // menu_order ... title ... etc
+      		//'order'            => 'DESC',
+      		//'include'          => '',
+      		//'exclude'          => '',
+      		//'meta_key'		=> '',
+      		//'meta_value'		=> '',
+      		//'key'				=> '',  /* ACF usage */
+      		//'value'			=> '',  /* ACF usage */
+      		//'post_type'        => 'post',
+      		//'post_mime_type'   => '',
+      		//'post_parent'      => '',
+      		//'post_status'      => 'publish',
+      		//'suppress_filters' => true,
+      		//'category__and' => array(),
+
+      		//'suppress_filters' => false, // this argument is required for CPT-onomies
+
+      		'tax_query' => array(
+      			'relation' => 'AND',
+      			array(
+      				'taxonomy' => 'menuflag',
+      				'terms' => array('springfield'),
+      				'field' => 'slug',
+      				//'operator' => 'NOT IN'
+      				'operator' => 'IN'
+      			)
+      		)
+
+      		/* ACF special query === in this case looking for true/false values */
+      		'meta_query' => array(
+      			array(
+      				'key'		=> 'featured_event',
+      				'value'		=> 'true',
+      				'compare'	=> '=='
+      			)
+      		),
+
+      		/* Post Template === use to find posts with specific template filename! */
+      		'meta_query' => array(
+                  array(
+                      'key' => '_wp_page_template',
+                      'value' => 'template-city.php', // template name as stored in the dB
+                  )
+              )
+
+      		//'tax_query' => array(
+      			//'relation' => 'OR',
+      			//array(
+      				//'taxonomy'	=> 'post_tag', // post_tag, product_type, etc...
+      				//'terms'		=> $type->slug, //specify what kind of slug
+      				//'operator' => 'NOT IN',
+      				//'operator' => 'IN',
+      				//'field' => 'slug',
+      				//'terms' => $cat_typeFood
+      				//'field'    => 'id',
+      				//'terms'    => get_the_ID(),
+      				//'include_children' => false,
+      				//'field'    => 'slug'	//tells to grab a slug human readable
+      		//	)
+      		//),
+      		//'category__not_in' => array(),
+      		//'category__and' => array($category)
+
+      	);
+      	$hasposts = get_posts( $args );
+
+      	if( !empty ( $hasposts ) ) {
+
+      		//theTemplate($hasposts,$category);
+      		/*if( empty ( $hasposts ) ) {
+
+      			echo "<script>$(document).ready(function() {";
+      			echo "$('li.page-item-1039').attr('style','display: none !important')";
+      			//echo "alert('this shit be empty bitch')";
+      			echo "})</script>";
+
+      		} else {};*/
+
+
+      	} else {}
+      }
+
+      echo thequery(XXX);
+      """
