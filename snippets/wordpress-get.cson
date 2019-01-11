@@ -134,3 +134,87 @@
       <?php echo get_the_term_list( $post->ID, 'style', '<ul class="styles"><li>', ',</li><li>', '</li></ul>' ); ?>
 
       """
+  'Wordpress - wp-get-categories':
+    'prefix':'wp-get-categories'
+    'body':"""
+  		<?php
+      if ( get_post_type() == 'pdx' ){
+
+       	$args = array(
+      	  'orderby' => 'menu_order',
+      	  'show_count' => -1,
+      	  // 'pad_counts' => 0,
+      	  'hierarchical' => false,
+      	  'taxonomy' => 'type',
+      	  'title_li' => 'what'
+      	); ?>
+      		<ul data-role="listview" data-inset="false" class="navbar tablist-left navbar ui-listview">
+      			<?php $category_ids = get_all_category_ids(); ?>
+      			<?php $categories = get_categories( $args );
+
+      			$myCat = $categories[0]->cat_ID;
+      			foreach ( $categories as $category ) {
+
+      				echo '<li class="';
+      				if ($category->term_id == $myCat) { echo 'current_page_item '; } else { echo ''; }
+      				echo 'page_item ' . $myCat . '"><a href="' . get_category_link( $category->term_id ) . '" rel="bookmark">' . $category->name . '' . $category->description . '</a></li>';
+      			} ?>
+      		</ul>
+
+      <?php }; ?>
+      """
+  'Wordpress - wp-get-taxonomy-list-alt':
+    'prefix':'wp-get-taxonomy-list-alt'
+    'body':"""
+  			$post_categories_core = wp_get_object_terms( $post->ID, 'category' );
+  			$post_categories_custom = wp_get_object_terms( $post->ID, 'blog_category' );
+              if ($post_categories_custom!='') {
+                  $post_categories = $post_categories_custom;
+              } else {
+                  $post_categories = $post_categories_core;
+              };
+  			foreach($post_categories as $c){
+  			   echo "<span class='post-category'><a href='" .get_term_link($c) . "' title='" .$c->name . "'>" .$c->name . "</a></span>";
+  			}
+      """
+  'Wordpress - wp-get-taxonomy-acf':
+    'prefix':'wp-get-taxonomy-acf'
+    'body':"""
+        <?php
+        if ( get_post_type() == 'pdx' ){
+
+         	$args = array(
+        	  'orderby' => 'menu_order',
+        	  'show_count' => -1,
+        	  // 'pad_counts' => 0,
+            'parent'    => 0, // Get all top level
+        	  'hierarchical' => false,
+        	  'taxonomy' => 'type',
+        	  'title_li' => 'what'
+        	); ?>
+        		<div class="row gutter2 justify-content-between">
+        			<?php $category_ids = get_all_category_ids(); ?>
+        			<?php $categories = get_categories( $args );
+
+        			$myCat = $categories[0]->cat_ID;
+        			foreach ( $categories as $category ) {
+
+
+            $queried_object = $category;
+            $taxonomy = $category->slug;
+            $term_id = $category->term_id;
+            $cat_widget = get_field('product_cat_image', $category);
+            $cat_image = wp_get_attachment_image_src( $cat_widget['ID'] , 'full' );
+
+
+
+
+        				echo '<div class="col-sm-4 ';
+        				if ($category->term_id == $myCat) { echo 'current_page_item '; } else { echo ''; }
+        				echo 'page_item ' . $myCat . '"><a href="' . get_category_link( $category->term_id ) . '" rel="bookmark"><img src="'. $cat_image[0] .'" alt="'.$category->description.'" class="img-fluid img-thumbnail"><br />' . $category->name . '' . '</a></div>';
+
+        			} ?>
+        		</div>
+
+        <?php }; ?>
+      """

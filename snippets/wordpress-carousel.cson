@@ -1,0 +1,102 @@
+'.text.html':
+
+  'Wordpress - Bootstrap Carousel - Functions.php':
+    'prefix':'wp-carousel-function'
+    'body':"""
+
+function featured_loop($uniqueSlug,$args,$max_counter) {
+  $query = new WP_Query( $args );
+	if ( $query->have_posts() ): $counter = 1;
+        ?><div id="featured-carousel_<?php echo $uniqueSlug; ?>" class="carousel slide container" data-ride="carousel" data-interval="false"><?php
+					if($query->have_posts()): $counter = 1; ?><ol class="carousel-indicators"><li  data-slide-to="1"></li><?php  foreach($query as $post) : setup_postdata($post);?>
+							<li  data-slide-to="<?php echo ($counter/4)+1 ?>"></li><?php
+					$counter++; endforeach; else: endif; wp_reset_query();?></ol>
+					<div class="carousel-inner container" role="listbox">
+            <?php $sub_counter = '1';
+      	     while ( $query->have_posts() ) : $query->the_post();
+
+      					$starter = ($sub_counter == '1') ? '<div class="carousel-item active"><div class="card-deck-wrapper"><div class="card-deck">' : ''; echo $starter; ?>
+      					<div class="card col-md-3">
+      						<div class="card-block" style="height: 100%;">
+      								<a id="id-<?php echo get_the_ID(); ?>" href="<?php the_permalink(get_the_ID()); ?>" title="<?php the_title(get_the_ID()); ?>">
+      									<?php
+                        global $product;
+						$price = '';
+                        if ( $product->is_type( 'variable' ) ) {
+                          $prices = array( $product->get_variation_price( 'max', true ), $product->get_variation_price( 'min', true ) );
+                          $priceHighest = $prices[0] !== $prices[1] ? sprintf( __( '%1$s', 'woocommerce' ), wc_price( $prices[0] ) ) : wc_price( $prices[0] );
+                          $prices = array( $product->get_variation_regular_price( 'max', true ), $product->get_variation_regular_price( 'min', true ) );
+                          sort( $prices );
+               						 if (($prices[0] !== $prices[1]) && ($prices[0]>0) ) {
+               							 $price .= '$'.$prices[0] .' - '. $priceHighest;
+               						 } else if($prices[0]>0) {
+               							 $price .= '$'.$prices[0];
+               						 }
+                        } else {
+							$price .= wc_price( get_post_meta( get_the_ID(), '_regular_price', true), array('currency') );
+                        }
+      									$image = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'woocommerce_single' ); ?>
+
+      									<img src="<?php echo $image[0]; ?>" />
+      									<?php	//echo woocommerce_get_product_thumbnail(); ?>
+      									<p class="mt-1 mb-0 card-title text-primary"><?php echo get_the_title(get_the_ID());?></p>
+      									<p class="font-trade text-primary" style="padding-top: 0.25em;"><?php echo ancora_author_names(get_the_ID()) ;?></p>
+      									<p class="mt-1 font-trade text-primary"><?php
+
+						  if ( $product->is_purchasable() ) { echo $price; }; ?></p>
+      								</a>
+                      <?php if ( $product->is_type( 'variable' ) ||  !$product->is_purchasable() ) { ?>
+        					<a href="<?php the_permalink(get_the_ID()); ?>" title="<?php echo get_the_title(get_the_ID()); ?>" class="btn btn-secondary text-light align-self-baseline mx-auto mt-1">Learn more</a>
+                      <?php } else { ?>
+						  <a href="?add-to-cart=<?php echo get_the_ID(); ?>" class="btn btn-secondary text-light align-self-baseline mx-auto mt-1">Add to Cart</a>
+                      <?php }; ?>
+                  </div>
+      					</div>
+      				<?php
+
+      					if (($sub_counter % 4 == 0 ) && ($sub_counter<$max_counter)) { ?></div></div></div><div class="carousel-item"><div class="card-deck-wrapper"><div class="card-deck"><?php }; ?>
+          		<?php $sub_counter++; wp_reset_postdata(); endwhile; ?>
+					</div></div></div></div>
+
+					<a class="left carousel-control" href="#featured-carousel_<?php echo $uniqueSlug; ?>" role="button" data-slide="prev">
+						<span class="icon-prev" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#featured-carousel_<?php echo $uniqueSlug; ?>" role="button" data-slide="next">
+						<span class="icon-next" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+
+		<?php wp_reset_postdata(); ?><?php  endif;
+
+};
+
+    """
+
+  'Wordpress - Bootstrap Carousel - Template':
+    'prefix':'wp-carousel-template'
+    'body':"""
+  $('#featured-carousel').carousel({});
+  <?php
+  	$max_counter = 8;
+  	$args = array(
+  	  'post_type' => 'product',
+  	  'posts_per_page' => $max_counter,
+  	  'tax_query' => array(
+          array(
+              'taxonomy' => 'product_visibility',
+              'field'    => 'name',
+              'terms'    => 'featured'
+          )
+      )
+    );
+  ?>
+	<section class="section pinned pin4 slice_carousel d-none d-lg-flex align-items-center">
+		<div class="container-fluid px-5 py-3">
+			<h2 class="display-3 mb-1 container">Check out these resources</h2>
+			<?php featured_loop('home',$args,$max_counter); ?>
+		</div>
+	</section>
+
+    """

@@ -1,0 +1,67 @@
+'.text.html':
+
+  'Wordpress - Core - Get Image':
+    'prefix':'wp-pagination-sibling-prev-next'
+    'body':"""
+<section class="section py-5 bg-white">
+	<div class="container">
+	  <div class="row justify-content-between">
+
+<?php
+$postlist_args_all = array(
+	'posts_per_page'  => -1,
+	'orderby'         => 'menu_order',
+	'order'           => 'ASC',
+	'post_type'       => 'locations',
+  'post_parent' => $post->post_parent,
+);
+// $postlist_args = array(
+// 	'posts_per_page'  => -1,
+// 	'orderby'         => 'menu_order',
+// 	'order'           => 'ASC',
+// 	'post_type'       => 'locations',
+// 	'tax_query' => array(
+// 		'relation' => 'AND',
+// 		array(
+// 			'taxonomy' => 'work_category',
+// 			'terms' => array($theCategory),
+// 			'field' => 'slug',
+// 			'operator' => 'IN'
+// 		)
+// 	)
+// );
+// if ( $theCategory == 'all' ) {
+	$postlist = get_posts( $postlist_args_all );
+// }
+
+// get ids of posts retrieved from get_posts
+$ids = array();
+foreach ($postlist as $thepost) {
+$ids[] = $thepost->ID;
+}
+
+// get and echo previous and next post in the same taxonomy
+$thisindex = array_search($post->ID, $ids);
+if ( !empty($ids[$thisindex-1]) ) { $previd = $ids[$thisindex-1]; }
+if ( !empty($ids[$thisindex+1]) ) { $nextid = $ids[$thisindex+1]; }
+
+if ( !empty($previd) ) {
+	echo '<div class="col text-left"><span class="nav-prev"><a rel="prev" href="' . get_permalink($previd). '">' . get_the_title($previd) . '</a></span></div>';
+}
+// if ( !empty($previd) && !empty($nextid) ) {
+// 	echo "<span class='nav-seperator'></span>";
+// }
+
+
+if ( !empty($nextid) ) {
+	echo '<div class="col text-right"><span class="nav-next"><a rel="next" href="' . get_permalink($nextid). '">' . get_the_title($nextid) . '</a></span></div class="col">';
+}
+
+?>
+
+
+		</div>
+	</div>
+</section>
+
+    """

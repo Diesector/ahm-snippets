@@ -1,7 +1,7 @@
 '.text.html':
 
   'PHP Split':
-    'prefix':'php-split-string-array'
+    'prefix':'split-string-array'
     'body':"""
         $str = "";
         $res = array_filter(explode(",", ${1:$str}));
@@ -21,3 +21,20 @@
     'body':"""
         $var = isset($_GET['css']) ? $_GET['css'] : '';
     """
+
+  'PHP Query - Find Values in Array':
+    'prefix':'findvalues'
+    'body':"""
+      <?php $punjab= array ('Ludhiana','Doraha','Jagraon','Moga','Phillaur','Ahmedgarh'); print_r($punjab); $pos = array_search('Ludhiana', $punjab); echo 'Phillaur found at: '.$pos; ?>
+      """
+
+  'PHP Find - Compare Two Arrays':
+    'prefix':'compare-arrays'
+    'body':"""
+
+$classes = get_body_class();
+$specialoptions_darklogo = array(get_field('logo_dark', 'option'));
+$specialoptions_darklogo_var=array_intersect($specialoptions_darklogo,$classes); // matches to body class
+$logo_color = (($shared_vars['header_var'] == 'dark') || !empty($specialoptions_darklogo_var) ) ? ' logo_dark': ' logo_light';
+
+      """

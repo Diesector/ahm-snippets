@@ -37,3 +37,23 @@
         <?php endif; ?>
 
     """
+
+  'Wordpress - Core - Better Image':
+    'prefix':'wp-image-better'
+    'body':"""
+
+      <?php
+      $image = get_post_thumbnail_id($post->ID);
+      $image_size = 'full';
+      $src = wp_get_attachment_image_src($image, $image_size);
+      if (false !== $src && is_array($src)) {
+          $src = $src[0];
+      }
+      $image_link = is_single() ? $src : get_permalink($post->ID);
+      $open_magnific = is_single() ? 'magnific' : '';
+      $icon = is_single() ? 'plus' : 'link'; ?>
+      <div class="figure fade-in text-center figcaption-middle">
+        <?php if (!empty($src)):  the_post_thumbnail('portfolio-thumb', ['title' => get_the_title(), 'alt' => get_the_title()]); endif ?>
+      </div>
+
+    """

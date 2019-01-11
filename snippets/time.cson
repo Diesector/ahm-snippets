@@ -16,3 +16,23 @@ $ date
 thiscommand to reset
 $ sudo dpkg-reconfigure tzdata
         """
+
+  'JQuery Timer':
+    'prefix':'jquery-timer'
+    'body':"""
+function myFunction() {
+};
+setTimeout( myFunction , 0);
+var delayit;
+$(window).resize(function(){
+	setTimeout( myFunction , 0);
+
+	clearTimeout(delayit);
+	delayit = setTimeout(function(){
+
+
+	},500);
+
+
+});
+        """

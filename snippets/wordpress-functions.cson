@@ -14,6 +14,26 @@
     add_filter( 'user_trailingslashit', 'remove_category', 100, 2);
     """
 
+  'Wordpress Functions.php - Include Shortcode':
+    'prefix':'wp-include-shortcode'
+    'body':"""
+      function include_file($atts) {
+      	$a = shortcode_atts( array(
+      		'slug' => 'NULL',
+      	), $atts );
+
+      	if($slug != 'NULL'){
+      		ob_start();
+      		get_template_part($a['slug']);
+      		return ob_get_clean();
+      	}
+      }
+      add_shortcode('include', 'include_file');
+      // usage: [include slug="sub-folder/filename_without_extension"]
+
+    """
+
+
   'Wordpress Functions.php - Login Scripts/Styles':
     'prefix':'wp-login-scripts'
     'body':"""
@@ -212,3 +232,14 @@ if ( ! file_exists( get_template_directory() . '/client-assets/walker.php' ) ) {
       	//add_image_size( 'inPost-float', 300, 0, true );
       }
     """
+
+
+
+
+  'Wordpress - Fix Missing Custom Fields':
+    'prefix':'wp-custom-field-missing-cpt-acf'
+    'body':"""
+        add_action( "plugins_loaded", "add_cpt_support_customfield" );
+        function add_cpt_support_customfield(){add_post_type_support( 'casestudy', array( 'custom-fields' ) );}
+        add_filter('acf/settings/remove_wp_meta_box', '__return_false');
+        """

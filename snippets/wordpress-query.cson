@@ -1,10 +1,6 @@
 '.text.html':
 
-  'Wordpress Query - Find Values in Array':
-    'prefix':'wp-query-findvalues'
-    'body':"""
-      <?php $punjab= array ('Ludhiana','Doraha','Jagraon','Moga','Phillaur','Ahmedgarh'); print_r($punjab); $pos = array_search('Ludhiana', $punjab); echo 'Phillaur found at: '.$pos; ?>
-      """
+
 
   'Wordpress Query - Override':
     'prefix':'wp-query-override'
@@ -135,7 +131,6 @@
 
       			echo "<script>$(document).ready(function() {";
       			echo "$('li.page-item-1039').attr('style','display: none !important')";
-      			//echo "alert('this shit be empty bitch')";
       			echo "})</script>";
 
       		} else {};*/

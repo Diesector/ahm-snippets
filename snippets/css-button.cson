@@ -1,0 +1,99 @@
+'.text.html, .source.css, .source.scss':
+
+
+
+  'SVG CSS':
+    'prefix':'css-button-custom'
+    'body':"""
+
+
+#content .btn_bubble {
+	margin-bottom: 1em;
+	background-size: 17px 100% !important; background-position: top left !important;
+	background-color: transparent !important; background-repeat: no-repeat !important;
+	padding: 1em calc( 1em + 17px )!important;
+	min-width: 200px;
+}
+
+#content .btn_bubble { margin: 1em 0.5em 0em 0.5em !important; }
+
+.gform_footer:before { left: 1px; }
+.gform_footer:after { right: 1px; }
+
+.btn_bubble:before { left: 16px; right: 16px; }
+.btn_bubble:after 	{ right: 0px; width: 17px; }
+
+.gform_footer:before { background-image: url( client-assets/images/submit_corner_left.png ); }
+.gform_footer:after { background-image: url( client-assets/images/submit_corner_right.png ); }
+.gform_footer:hover input { background-color: transparent !important; color: #3d2e21 !important; }
+.gform_footer:hover:before { background-image: url( client-assets/images/btn_brownLine1.png ) !important; }
+.gform_footer:hover:after { background-image: url( client-assets/images/btn_brownLine2.png ) !important; }
+
+#content .btn_whiteLine { background-image: url( client-assets/images/btn_whiteLine1.png ) !important; }
+#content .btn_whiteLine:after { background-image: url( client-assets/images/btn_whiteLine2.png ) !important; }
+#content .btn_whiteLine:hover { background-image: url( client-assets/images/btn_whiteLine1-hover.png ) !important; }
+#content .btn_whiteLine:hover:after { background-image: url( client-assets/images/btn_whiteLine2-hover.png ) !important; }
+
+#content .btn_brown.text-normal.btn-default { color: #f9ab1a !important; }
+#content .btn_brown.text-normal.btn-default:hover { color: #3d2e21 !important; }
+
+#content .btn_brownLine.text-normal.btn-default { color: #3d2e21 !important; }
+#content .btn_brownLine.text-normal.btn-default:hover { color: #f9ab1a !important; }
+
+#content .btn_brownLine { background-image: url( client-assets/images/btn_brownLine1.png ) !important; }
+#content .btn_brownLine:after { background-image: url( client-assets/images/btn_brownLine2.png ) !important; }
+#content .btn_brownLine:hover { background-image: url( client-assets/images/btn_brownLine1-hover.png ) !important; }
+#content .btn_brownLine:hover:after { background-image: url( client-assets/images/btn_brownLine2-hover.png ) !important; }
+
+#content .btn_orange { background-image: url( client-assets/images/btn_orange1.png ) !important; }
+#content .btn_orange:after { background-image: url( client-assets/images/btn_orange2.png ) !important; }
+#content .btn_orange:hover { background-image: url( client-assets/images/btn_orange1-hover.png ) !important; }
+#content .btn_orange:hover:after { background-image: url( client-assets/images/btn_orange2-hover.png ) !important; }
+
+#content .btn_brown { background-image: url( client-assets/images/btn_orange1-hover.png ) !important; }
+#content .btn_brown:after { background-image: url( client-assets/images/btn_orange2-hover.png ) !important; }
+#content .btn_brown:hover { background-image: url( client-assets/images/btn_orange1.png ) !important; }
+#content .btn_brown:hover:after { background-image: url( client-assets/images/btn_orange2.png ) !important; }
+
+#content .btn_bubble,
+#content .btn_bubble:before,
+#content .btn_bubble:after {
+	-webkit-transition: all 0ms;
+	-moz-transition: all 0ms;
+	-o-transition: all 0ms;
+	transition: all 0ms;
+	-webkit-transition-timing-function: cubic-bezier(1,0,1,0); /* linear (optional) */
+	-moz-transition-timing-function: cubic-bezier(1,0,1,0); /* linear (optional) */
+	-o-transition-timing-function: cubic-bezier(1,0,1,0); /* linear (optional) */
+	transition-timing-function: cubic-bezier(1,0,1,0); /* linear (optional) */
+}
+
+#content .btn_orange:before { 		background-color: #f9ab1a !important; }
+#content .btn_orange { color: white !important; }
+#content .btn_orange:hover { color: #f9ab1a !important; }
+#content .btn_orange:hover:before { 	background-color: #3d2e21 !important; }
+
+#content .btn_brown:before { 		background-color: #3d2e21 !important; }
+#content .btn_brown { color: white !important; }
+#content .btn_brown:hover { color: white !important; }
+#content .btn_brown:hover:before { 	background-color: #f9ab1a !important; }
+
+#content .btn_whiteLine { color: white !important; }
+#content .btn_whiteLine:hover { color: #f9ab1a !important; }
+#content .btn_whiteLine:hover:before { 	background-color: white !important; }
+#content .btn_brownLine:hover:before { 	background-color: rgba(61, 46, 33,1) !important; }
+
+#content .btn_whiteLine:before {
+	background-image:
+	  linear-gradient(to bottom, rgba(255,255,255,1) 0px, rgba(255,255,255,1) 2px, rgba(255,255,255,0) 2px),
+	  linear-gradient(to top, rgba(255,255,255,1) 0px, rgba(255,255,255,1) 2px, rgba(255,255,255,0) 2px),
+	  linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0)) ;
+}
+#content .btn_brownLine:before,.gform_footer:hover input {
+	background-image:
+	  linear-gradient(to bottom, rgba(61, 46, 33,1) 0px, rgba(61, 46, 33,1) 2px, rgba(61, 46, 33,0) 2px),
+	  linear-gradient(to top, rgba(61, 46, 33,1) 0px, rgba(61, 46, 33,1) 2px, rgba(61, 46, 33,0) 2px),
+	  linear-gradient(to bottom, rgba(61, 46, 33,0), rgba(61, 46, 33,0)) ;
+}
+
+      """

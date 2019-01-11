@@ -30,3 +30,43 @@
 
         <?php get_footer();
     """
+
+  'Wordpress Footer Columns Template Code':
+    'prefix':'wp-template-page'
+    'body':"""
+				<div class="row justify-content-center">
+					<div class="col-md-3">
+								<?php
+								//echo get_menu_title(3);
+								wp_nav_menu( array(
+									'depth'             => 1,
+									'menu'           		=> 3,
+									'menu_class'        => 'nav navbar-nav'
+								) );
+								?>
+					</div>
+					<div class="col-md-3">
+								<?php
+								//echo get_menu_title(4);
+								wp_nav_menu( array(
+									'depth'             => 2,
+									'menu'           		=> 4,
+									'menu_class'        => 'nav navbar-nav'
+								) );
+								?>
+					</div>
+					<div class="col-md-3">
+								<?php
+								//echo get_menu_title(5);
+								wp_nav_menu( array(
+									'depth'             => 2,
+									'menu'           		=> 5,
+									'menu_class'        => 'nav navbar-nav'
+								) );
+								?>
+					</div>
+					<div class="col-md-3">
+						<?php if(!function_exists('dynamic_sidebar') || !dynamic_sidebar('footer-area')) ?>
+					</div>
+				</div>
+    """

@@ -1,0 +1,8 @@
+'.text.html, .source.js':
+
+
+  'Isset':
+    'prefix':'jquery-isset'
+    'body':"""
+      if ( (value && value.length) ) {}
+    """

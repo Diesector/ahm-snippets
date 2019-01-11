@@ -1,0 +1,35 @@
+'.text.html, .source.js':
+
+  'Hover Class Toggle':
+    'prefix':'jquery-mmenu'
+    'body':"""
+      	$("#menu").mmenu().on('init', function(){
+      	    console.log('mmenu init');
+            jQuery('#menu').prepend('<a href="<?php echo get_site_url()  ?>" class="icon_recomm_smalllogo"></a>');
+        }).trigger( "init" );
+
+        //
+      	// $('.sticky-wrapper').mmenu({
+      	// 	offCanvas: {
+      	// 	   position  : "left",
+      	// 	},
+      	// 	navbar 		: false,
+      	// 	scrollBugFix: false,
+      	// },{
+      	// 	// configuration
+      	//    classNames: {
+      	// 	  toggles: {
+      	// 		 toggle: "mmenu_toggle",
+      	// 		 //check: "mark"
+      	// 	  }
+      	//    }
+      	// }).on('init', function(){
+      	// 	console.log('mmenu init');
+      	// 	$('.current-menu-item').parent('.children').parent('.mm-panel').removeClass('mm-hidden').addClass('mm-highest mm-current mm-opened');
+      	// 	$('body.home .current-menu-item').parent('.children').parent('.mm-panel').removeClass('mm-current').addClass('mm-subopened');
+      	// 	$('.mm-current:not(.mm-highest)').removeClass('mm-current');
+      	// });
+      	// var API = $("#masthead").data( "mmenu" );
+      	// $('nav .navbar-toggle').click(function() { API.open(); });
+      	// $('body:not(.mm-opened) a[href="#masthead"]').click(function() { API.close(); });
+    """

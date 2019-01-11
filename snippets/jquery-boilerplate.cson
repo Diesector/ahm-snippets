@@ -1,5 +1,15 @@
-'.text.html':
+'.text.html, .source.js':
 
+  'jQuery Document Ready Included JS':
+    'prefix':'jquery-documentready-included'
+    'body':"""
+      (function ($) {  // put all my code in here
+
+
+      }(jQuery));
+
+
+    """
   'jQuery Document Ready':
     'prefix':'jquery-documentready'
     'body':"""

@@ -1,0 +1,23 @@
+'.text.html, .source.js':
+
+  'jQuery - Timer Click':
+    'prefix':'jquery-timer-click'
+    'body':"""
+
+        tabChange = function(){
+          var tabs = $('.recomm_pill_tabs .nav-pills > a');
+          var active = tabs.filter('.active');
+          var next = active.next('a').length? active.next('a') : tabs.filter(':first-child');
+          // Use the Bootsrap tab show method
+          next.trigger('click');
+        }
+
+        var timer = setInterval( tabChange, 10000);
+
+        $('.recomm_pill_tabs .nav-pills').hover(function(ev){
+            clearInterval(timer);
+        }, function(ev){
+            timer = setInterval( tabChange, 10000);
+        });
+
+    """

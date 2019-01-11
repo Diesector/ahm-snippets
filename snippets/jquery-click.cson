@@ -1,4 +1,4 @@
-'.text.html':
+'.text.html, .source.js':
 
   'Trigger Click':
     'prefix':'click-trigger'
@@ -17,6 +17,13 @@
 
         //$('$1').click(function () {return false;});
         $('$1').unbind('click');
+    """
+
+  'Click Target Blank':
+    'prefix':'click-target-blank'
+    'body':"""
+      jQuery( "a:not([href*='<?php echo site_url(); ?>']):not([href*='#']):not([href^='/']):not([href*='.pdf']):not([href*='youtu'])" ).attr('target','_blank');
+      jQuery( "a[href*='.pdf']" ).attr('target','_blank');
     """
 
   'Enter Key Clicks':
@@ -50,4 +57,10 @@
         console.log( dataKey + " " idKey);
         });
         });
+    """
+
+  'OnClick Locations Inline':
+    'prefix':'click-location'
+    'body':"""
+      onclick="javascript:location.href='http://www.google.com/'"
     """

@@ -1,4 +1,4 @@
-'.text.html':
+'.text.html, .source.js':
 
   'JSON String to Array':
     'prefix':'json-string-array'
